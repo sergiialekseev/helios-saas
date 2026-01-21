@@ -28,6 +28,9 @@ const NavBar = () => {
           <Button component={RouterLink} to="/" color="inherit">
             Home
           </Button>
+          <Button component={RouterLink} to="/gaslur" color="inherit">
+            NFT Landing
+          </Button>
           {user ? (
             <>
               <Button component={RouterLink} to="/dashboard" color="inherit">
