@@ -1,0 +1,16 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: saas-frontend
+  annotations:
+    run.googleapis.com/ingress: all
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/maxScale: '5'
+    spec:
+      containers:
+        - image: REGION-docker.pkg.dev/PROJECT_ID/saas-frontend/saas-frontend:latest
+          ports:
+            - containerPort: 8080

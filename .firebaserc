@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "test-d2f3b",
+    "test": "test-d2f3b"
+  },
+  "targets": {},
+  "etags": {}
+}
