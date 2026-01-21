@@ -33,7 +33,7 @@ const Landing = () => {
           <Grid item xs={12} md={6}>
             <Stack spacing={3}>
               <Typography variant="overline" sx={{ letterSpacing: '0.3em', color: 'text.secondary' }}>
-                SaaS starter kit
+                SaaS starter kit (test)
               </Typography>
               <Typography variant="h2">
                 Build a bold SaaS experience with Firebase and Cloud Run
