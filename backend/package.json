@@ -10,8 +10,10 @@
   },
   "dependencies": {
     "cors": "^2.8.5",
+    "dotenv": "^17.2.3",
     "express": "^4.19.2",
-    "firebase-admin": "^12.5.0"
+    "firebase-admin": "^12.5.0",
+    "stripe": "^20.2.0"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",

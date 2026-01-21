@@ -5,6 +5,8 @@ import Login from '@/pages/Login';
 import Register from '@/pages/Register';
 import Dashboard from '@/pages/Dashboard';
 import GaslurLanding from '@/pages/GaslurLanding';
+import CheckoutSuccess from '@/pages/CheckoutSuccess';
+import CheckoutCancel from '@/pages/CheckoutCancel';
 import NavBar from '@/components/NavBar';
 import ProtectedRoute from '@/components/ProtectedRoute';
 
@@ -21,6 +23,8 @@ const App = () => {
           <Route path="/gaslur" element={<GaslurLanding />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/checkout/success" element={<CheckoutSuccess />} />
+          <Route path="/checkout/cancel" element={<CheckoutCancel />} />
           <Route
             path="/dashboard"
             element={

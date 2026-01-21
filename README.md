@@ -103,7 +103,7 @@ gcloud run deploy saas-backend \
   --region YOUR_REGION \
   --platform managed \
   --allow-unauthenticated \
-  --set-env-vars CORS_ORIGIN="https://your-frontend-url"
+  --set-env-vars CORS_ORIGIN="https://your-frontend-url",FRONTEND_BASE_URL="https://your-frontend-url",STRIPE_SECRET_KEY="sk_test_...",STRIPE_PRICE_IDS="price_1SmBryAj9VxgbXq8YNG0LinU,price_1SmBreAj9VxgbXq8HXY5QCfT"
 ```
 
 ### Build and deploy frontend to Cloud Run
@@ -142,6 +142,9 @@ firebase deploy --only functions
 - Frontend variables (`VITE_*`) are build-time values passed via `.env` or Docker build args.
 - Backend uses runtime env vars in Cloud Run:
   - `CORS_ORIGIN` to control allowed origins.
+  - `FRONTEND_BASE_URL` for Stripe success/cancel redirects.
+  - `STRIPE_SECRET_KEY` for Stripe API access.
+  - `STRIPE_PRICE_IDS` (optional) to override which prices are shown, comma-separated.
 - For local backend access to Firestore, use Application Default Credentials:
   ```bash
   gcloud auth application-default login
@@ -163,6 +166,9 @@ Required GitHub secrets:
 - `GCP_PROJECT_ID`
 - `GCP_REGION`
 - `CORS_ORIGIN`
+- `FRONTEND_BASE_URL`
+- `STRIPE_SECRET_KEY`
+- `STRIPE_PRICE_IDS`
 - `VITE_FIREBASE_API_KEY`
 - `VITE_FIREBASE_AUTH_DOMAIN`
 - `VITE_FIREBASE_PROJECT_ID`

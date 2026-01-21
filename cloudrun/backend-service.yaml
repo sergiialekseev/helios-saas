@@ -17,3 +17,9 @@ spec:
           env:
             - name: CORS_ORIGIN
               value: https://your-frontend-url
+            - name: FRONTEND_BASE_URL
+              value: https://your-frontend-url
+            - name: STRIPE_SECRET_KEY
+              value: sk_test_...
+            - name: STRIPE_PRICE_IDS
+              value: price_1SmBryAj9VxgbXq8YNG0LinU,price_1SmBreAj9VxgbXq8HXY5QCfT
