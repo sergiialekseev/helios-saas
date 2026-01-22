@@ -26,6 +26,9 @@ const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 const stripe = stripeSecretKey
   ? new Stripe(stripeSecretKey, { apiVersion: '2025-12-15.clover' })
   : null;
+const openaiApiKey = process.env.OPENAI_API_KEY;
+const chatkitWorkflowId =
+  process.env.CHATKIT_WORKFLOW_ID || 'wf_6952c7810524819099b6ce9bc60beec604d7b5f40ae1954c';
 const defaultPriceIds = ['price_1SmBryAj9VxgbXq8YNG0LinU', 'price_1SmBreAj9VxgbXq8HXY5QCfT'];
 const envPriceIds = (process.env.STRIPE_PRICE_IDS ?? '')
   .split(',')
@@ -47,6 +50,50 @@ app.get('/api/health', (_req, res) => {
 
 app.get('/api/hello', (_req, res) => {
   res.json({ message: 'Hello from Cloud Run', timestamp: new Date().toISOString() });
+});
+
+app.post('/api/chatkit/session', async (req, res) => {
+  if (!openaiApiKey) {
+    return res.status(500).json({ error: 'OpenAI is not configured.' });
+  }
+
+  const { deviceId } = req.body as { deviceId?: string };
+
+  if (!deviceId) {
+    return res.status(400).json({ error: 'deviceId is required.' });
+  }
+
+  try {
+    const response = await fetch('https://api.openai.com/v1/chatkit/sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'OpenAI-Beta': 'chatkit_beta=v1',
+        Authorization: `Bearer ${openaiApiKey}`
+      },
+      body: JSON.stringify({
+        workflow: { id: chatkitWorkflowId },
+        user: deviceId
+      })
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('ChatKit session error', errorText);
+      return res.status(500).json({ error: 'Failed to create ChatKit session.' });
+    }
+
+    const data = (await response.json()) as { client_secret?: string };
+
+    if (!data.client_secret) {
+      return res.status(500).json({ error: 'ChatKit session missing client secret.' });
+    }
+
+    return res.json({ client_secret: data.client_secret });
+  } catch (error) {
+    console.error('ChatKit session failed', error);
+    return res.status(500).json({ error: 'Failed to create ChatKit session.' });
+  }
 });
 
 app.get('/api/stripe/prices', async (_req, res) => {

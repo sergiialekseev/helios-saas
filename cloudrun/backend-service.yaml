@@ -23,3 +23,7 @@ spec:
               value: sk_test_...
             - name: STRIPE_PRICE_IDS
               value: price_1SmBryAj9VxgbXq8YNG0LinU,price_1SmBreAj9VxgbXq8HXY5QCfT
+            - name: OPENAI_API_KEY
+              value: sk-...
+            - name: CHATKIT_WORKFLOW_ID
+              value: wf_6952c7810524819099b6ce9bc60beec604d7b5f40ae1954c

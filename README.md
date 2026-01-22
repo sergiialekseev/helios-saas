@@ -103,7 +103,7 @@ gcloud run deploy saas-backend \
   --region YOUR_REGION \
   --platform managed \
   --allow-unauthenticated \
-  --set-env-vars CORS_ORIGIN="https://your-frontend-url",FRONTEND_BASE_URL="https://your-frontend-url",STRIPE_SECRET_KEY="sk_test_...",STRIPE_PRICE_IDS="price_1SmBryAj9VxgbXq8YNG0LinU,price_1SmBreAj9VxgbXq8HXY5QCfT"
+  --set-env-vars CORS_ORIGIN="https://your-frontend-url",FRONTEND_BASE_URL="https://your-frontend-url",STRIPE_SECRET_KEY="sk_test_...",STRIPE_PRICE_IDS="price_1SmBryAj9VxgbXq8YNG0LinU,price_1SmBreAj9VxgbXq8HXY5QCfT",OPENAI_API_KEY="sk-...",CHATKIT_WORKFLOW_ID="wf_6952c7810524819099b6ce9bc60beec604d7b5f40ae1954c"
 ```
 
 ### Build and deploy frontend to Cloud Run
@@ -145,6 +145,8 @@ firebase deploy --only functions
   - `FRONTEND_BASE_URL` for Stripe success/cancel redirects.
   - `STRIPE_SECRET_KEY` for Stripe API access.
   - `STRIPE_PRICE_IDS` (optional) to override which prices are shown, comma-separated.
+  - `OPENAI_API_KEY` for ChatKit session creation.
+  - `CHATKIT_WORKFLOW_ID` for the ChatKit workflow.
 - For local backend access to Firestore, use Application Default Credentials:
   ```bash
   gcloud auth application-default login
@@ -169,6 +171,8 @@ Required GitHub secrets:
 - `FRONTEND_BASE_URL`
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PRICE_IDS`
+- `OPENAI_API_KEY`
+- `CHATKIT_WORKFLOW_ID`
 - `VITE_FIREBASE_API_KEY`
 - `VITE_FIREBASE_AUTH_DOMAIN`
 - `VITE_FIREBASE_PROJECT_ID`

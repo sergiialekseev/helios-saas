@@ -1,15 +1,18 @@
-import { AutoGraph, RocketLaunch, Security } from '@mui/icons-material';
+import { AutoGraph, ChatBubbleOutline, RocketLaunch, Security } from '@mui/icons-material';
 import {
   Alert,
   Box,
   Button,
   CircularProgress,
   Container,
+  Drawer,
+  Fab,
   Grid,
   Paper,
   Stack,
   Typography
 } from '@mui/material';
+import { ChatKit, useChatKit } from '@openai/chatkit-react';
 import { useEffect, useMemo, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
 
@@ -50,6 +53,53 @@ const Landing = () => {
   const [pricesLoading, setPricesLoading] = useState(true);
   const [pricingError, setPricingError] = useState('');
   const [checkoutLoading, setCheckoutLoading] = useState<string | null>(null);
+  const [chatOpen, setChatOpen] = useState(false);
+  const [chatDeviceId] = useState(() => {
+    if (typeof window === 'undefined') {
+      return 'server';
+    }
+
+    const storageKey = 'chatkit_device_id';
+    const existing = window.localStorage.getItem(storageKey);
+    if (existing) {
+      return existing;
+    }
+
+    const next =
+      typeof crypto !== 'undefined' && 'randomUUID' in crypto
+        ? crypto.randomUUID()
+        : `device_${Date.now()}_${Math.random().toString(16).slice(2)}`;
+
+    window.localStorage.setItem(storageKey, next);
+    return next;
+  });
+
+  const { control } = useChatKit({
+    api: {
+      async getClientSecret(existing) {
+        if (existing) {
+          return existing;
+        }
+
+        const response = await fetch(`${apiBaseUrl}/api/chatkit/session`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ deviceId: chatDeviceId })
+        });
+
+        if (!response.ok) {
+          throw new Error('ChatKit session failed');
+        }
+
+        const data = (await response.json()) as { client_secret?: string };
+        if (!data.client_secret) {
+          throw new Error('Missing ChatKit client secret');
+        }
+
+        return data.client_secret;
+      }
+    }
+  });
 
   useEffect(() => {
     let active = true;
@@ -274,6 +324,49 @@ const Landing = () => {
           </Stack>
         </Container>
       </Box>
+
+      <Fab
+        color="primary"
+        variant="extended"
+        onClick={() => setChatOpen(true)}
+        sx={{
+          position: 'fixed',
+          right: { xs: 16, md: 32 },
+          bottom: { xs: 16, md: 32 },
+          zIndex: 1200
+        }}
+      >
+        <ChatBubbleOutline sx={{ mr: 1 }} />
+        Chat with us
+      </Fab>
+
+      <Drawer
+        anchor="right"
+        open={chatOpen}
+        onClose={() => setChatOpen(false)}
+        PaperProps={{
+          sx: {
+            width: { xs: '100%', sm: 380 },
+            p: 3,
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 2
+          }
+        }}
+      >
+        <Stack direction="row" alignItems="center" justifyContent="space-between">
+          <Box>
+            <Typography variant="h6">ChatKit</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Ask anything about the starter kit.
+            </Typography>
+          </Box>
+          <Button onClick={() => setChatOpen(false)}>Close</Button>
+        </Stack>
+        <Box sx={{ flex: 1, minHeight: 420 }}>
+          <ChatKit control={control} style={{ width: '100%', height: '100%' }} />
+        </Box>
+      </Drawer>
     </Box>
   );
 };
