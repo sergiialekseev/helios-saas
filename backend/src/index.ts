@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
 
-// Load environment variables from .env file if it exists
+// Load environment variables from .env file if it exists.
 const envPaths = [path.resolve(process.cwd(), '.env'), path.resolve(process.cwd(), 'src', '.env')];
 for (const envPath of envPaths) {
   if (fs.existsSync(envPath)) {
