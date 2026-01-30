@@ -17,6 +17,7 @@ import App from './App';
 import theme from './theme';
 import { AuthProvider } from './auth/AuthContext';
 
+// Render the React application
 ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
