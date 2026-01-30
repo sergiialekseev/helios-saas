@@ -45,4 +45,4 @@ jobs:
             --region "${{ secrets.GCP_REGION }}" \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars CORS_ORIGIN="${{ secrets.CORS_ORIGIN }}",FRONTEND_BASE_URL="${{ secrets.FRONTEND_BASE_URL }}",STRIPE_SECRET_KEY="${{ secrets.STRIPE_SECRET_KEY }}",STRIPE_PRICE_IDS="${{ secrets.STRIPE_PRICE_IDS }}",OPENAI_API_KEY="${{ secrets.OPENAI_API_KEY }}",CHATKIT_WORKFLOW_ID="${{ secrets.CHATKIT_WORKFLOW_ID }}"
+            --set-env-vars=^|^CORS_ORIGIN=${{ secrets.CORS_ORIGIN }}|FRONTEND_BASE_URL=${{ secrets.FRONTEND_BASE_URL }}|STRIPE_SECRET_KEY=${{ secrets.STRIPE_SECRET_KEY }}|STRIPE_PRICE_IDS=${{ secrets.STRIPE_PRICE_IDS }}|OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}|CHATKIT_WORKFLOW_ID=${{ secrets.CHATKIT_WORKFLOW_ID }}
